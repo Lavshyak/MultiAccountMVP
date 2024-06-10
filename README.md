@@ -5,4 +5,6 @@ asp.net 8, identity, ef core in memory
 3) you can call CheckDevAccount api method with true return
 4) when you call CheckDevAccountWithPolicy api method, you get 403
 
+with Register and CheckAccountWithPolicy the same)
+
 DevRequirementHandler.HandleRequirementAsync never invoked(

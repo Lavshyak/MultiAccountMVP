@@ -43,6 +43,14 @@ public class TheControllerController : ControllerBase
         var user = User;
         return !IsDev(user);
     }
+    
+    [Authorize(CustomAuthPolicies.Account)]
+    [HttpGet]
+    public bool CheckAccountWithPolicy()
+    {
+        var user = User;
+        return !IsDev(user);
+    }
 
     [Authorize(AuthenticationSchemes = CustomAuthSchemes.CookieDevAccount)]
     [HttpGet]

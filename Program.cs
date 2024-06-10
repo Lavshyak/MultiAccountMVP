@@ -97,6 +97,12 @@ public static class Program
                 policy.AddAuthenticationSchemes(CustomAuthSchemes.CookieDevAccount);
                 policy.RequireAuthenticatedUser();
             });
+            
+            options.AddPolicy(CustomAuthPolicies.Account, policy =>
+            {
+                policy.AddRequirements(new AccountRequirement());
+                policy.RequireAuthenticatedUser();
+            });
         });
     }
     
