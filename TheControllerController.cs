@@ -31,7 +31,7 @@ public class TheControllerController : ControllerBase
     public bool CheckAccount()
     {
         var user = User;
-        return user.Identity?.AuthenticationType != CustomAuthSchemes.CookieDevAccount;
+        return user.Claims.All(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value != CustomAuthSchemes.CookieDevAccount);
     }
 
     [Authorize(AuthenticationSchemes = CustomAuthSchemes.CookieDevAccount)]
@@ -39,7 +39,7 @@ public class TheControllerController : ControllerBase
     public bool CheckDevAccount()
     {
         var user = User;
-        return user.Identity?.AuthenticationType == CustomAuthSchemes.CookieDevAccount;
+        return user.Claims.Any(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value == CustomAuthSchemes.CookieDevAccount);
     }
     
     [Authorize(CustomAuthPolicies.DevAccount)]
@@ -47,7 +47,7 @@ public class TheControllerController : ControllerBase
     public bool CheckDevAccountWithPolicy()
     {
         var user = User;
-        return user.Identity?.AuthenticationType == CustomAuthSchemes.CookieDevAccount;
+        return user.Claims.Any(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value == CustomAuthSchemes.CookieDevAccount);
     }
     
     public record RegisterParameters(string Email, string Password);
