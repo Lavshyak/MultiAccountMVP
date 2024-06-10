@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,12 +28,20 @@ public class TheControllerController : ControllerBase
         _signInManager = signInManager;
     }
 
+    [NonAction]
+    private bool IsDev(ClaimsPrincipal user)
+    {
+        return user.Claims.Any(claim =>
+            claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" &&
+            claim.Value == CustomAuthSchemes.CookieDevAccount);
+    }
+    
     [Authorize]
     [HttpGet]
     public bool CheckAccount()
     {
         var user = User;
-        return user.Claims.All(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value != CustomAuthSchemes.CookieDevAccount);
+        return !IsDev(user);
     }
 
     [Authorize(AuthenticationSchemes = CustomAuthSchemes.CookieDevAccount)]
@@ -39,7 +49,7 @@ public class TheControllerController : ControllerBase
     public bool CheckDevAccount()
     {
         var user = User;
-        return user.Claims.Any(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value == CustomAuthSchemes.CookieDevAccount);
+        return IsDev(user);
     }
     
     [Authorize(CustomAuthPolicies.DevAccount)]
@@ -47,7 +57,7 @@ public class TheControllerController : ControllerBase
     public bool CheckDevAccountWithPolicy()
     {
         var user = User;
-        return user.Claims.Any(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value == CustomAuthSchemes.CookieDevAccount);
+        return IsDev(user);
     }
     
     public record RegisterParameters(string Email, string Password);
