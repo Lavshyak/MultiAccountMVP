@@ -83,7 +83,6 @@ public class TheControllerController : ControllerBase
         var result = await _devUserManager.CreateAsync(account, parameters.Password);
         if (result.Succeeded)
         {
-            _devSignInManager.AuthenticationScheme = CustomAuthSchemes.CookieDevAccount;
             await _devSignInManager.SignInAsync(account, false, CustomAuthSchemes.CookieDevAccount);
         }
     }
