@@ -1,3 +1,5 @@
+asp.net 8, identity, ef core in memory
+
 1) call DevRegister api method
 2) you can see that cookie CookieDevAccount created in your browser
 3) you can call CheckDevAccount api method with true return
