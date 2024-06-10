@@ -70,7 +70,7 @@ public static class Program
             .AddEntityFrameworkStores<MainDbContext>()
             .AddSignInManager();
         
-        services.AddAuthentication(CustomAuthSchemes.CookieDevAccount)
+        services.AddAuthentication()
             .AddCookie(CustomAuthSchemes.CookieDevAccount, options =>
             {
                 options.Cookie.Name = CustomAuthSchemes.CookieDevAccount;
@@ -94,6 +94,8 @@ public static class Program
             options.AddPolicy(CustomAuthPolicies.DevAccount, policy =>
             {
                 policy.AddRequirements(new DevRequirement());
+                policy.AddAuthenticationSchemes(CustomAuthSchemes.CookieDevAccount);
+                policy.RequireAuthenticatedUser();
             });
         });
     }
