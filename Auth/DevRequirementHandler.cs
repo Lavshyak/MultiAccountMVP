@@ -6,7 +6,7 @@ public class DevRequirementHandler : AuthorizationHandler<DevRequirement>
 {
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, DevRequirement requirement)
     {
-        //this method never calls
+        //this method never invoked
         
         if (context.User.Claims.Any(claim => claim.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/authenticationmethod" && claim.Value == CustomAuthSchemes.CookieDevAccount))
         {
