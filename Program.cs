@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MultiAccountMVP.Auth;
@@ -87,7 +88,8 @@ public static class Program
                 };
             });
 
-        services.AddSingleton<DevRequirementHandler>();
+        services.AddSingleton<IAuthorizationHandler, DevRequirementHandler>();
+        services.AddSingleton<IAuthorizationHandler, AccountRequirementHandler>();
 
         services.AddAuthorization(options =>
         {
